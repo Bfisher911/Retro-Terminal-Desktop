@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Terminal Desktop</title>
+    <!-- 
+    Retro Terminal Desktop
+    Author: Gemini
+    Created for: Blaine Fisher
+    Date: 2025-07-07
+    Version: 1.3
+
+    Features:
+    - Single-file, offline-first HTML/CSS/JS application.
+    - Retro green-on-black "Fallout/Pip-Boy" terminal aesthetic.
+    - Draggable and resizable widgets.
+    - Widgets: Clock, To-Do List, Timer/Stopwatch, Reminders, Sticky Notes,
+      Calculator, Daily Quote, Calendar, Day Progress, Network Status, Battery.
+    - Data persistence using localStorage for To-Dos, Notes, and widget positions.
+    - No external libraries or dependencies. Vanilla JavaScript.
+    - Custom retro sound effects generated with Web Audio API.
+    - CRT scanline and flicker effects via CSS.
+    -->
+    <style>
+        /* --- FONT IMPORT (BASE64 to ensure offline availability) --- */
+        @font-face {
+            font-family: 'Press Start 2P';
+            font-style: normal;
+            font-weight: 400;
+            src: url(data:font/woff2;base64,d09GMgABAAAAAAYMAAsAAAAACyAAAAV4AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAVA1iWAIICg4ACAE2AiQDBgsEAAQgBYsdByAbfA3ILH8jB691jVzYIBwVkv9//z/u3b4bY2aT4KNgojHAEIifkUe3zdsx5g8SgQAjE2OfBAwE+QkQJG4EFpXpT8P//3/y/9v/P/7f+f/z/+//v/7/+//3/9//v/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7-2.0.0.css) format('woff2');
+        }
+
+        /* --- GLOBAL STYLES & CRT EFFECT --- */
+        :root {
+            --main-color: #33ff33;
+            --bg-color: #0a1a0a;
+            --dark-bg: #051005;
+            --border-color: #2c5c2c;
+            --glow-color: rgba(51, 255, 51, 0.3);
+            --shadow-color: rgba(51, 255, 51, 0.2);
+            --font-family: 'Press Start 2P', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: var(--font-family);
+            color: var(--main-color);
+            font-size: 10px; /* Base font size for easier rem calculation */
+            text-shadow: 0 0 5px var(--glow-color), 0 0 10px var(--glow-color);
+            user-select: none;
+        }
+
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        
+        body::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0;
+            z-index: 2;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 0.1; }
+        }
+
+        #desktop {
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(var(--bg-color) 1px, transparent 0);
+            background-size: 8px 8px;
+            position: relative;
+        }
+        
+        /* --- WIDGET STYLES --- */
+        .widget {
+            position: absolute;
+            border: 2px solid var(--border-color);
+            background-color: rgba(10, 26, 10, 0.85);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 0 15px var(--shadow-color);
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+            min-height: 100px;
+            resize: both;
+            overflow: hidden;
+            border-radius: 3px;
+        }
+
+        .widget-header {
+            background-color: var(--border-color);
+            padding: 5px 8px;
+            cursor: move;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .widget-header .title {
+            text-transform: uppercase;
+        }
+        
+        .widget-header .close-btn {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0 4px;
+        }
+        .widget-header .close-btn:hover {
+            color: #ff5555;
+            text-shadow: 0 0 5px #ff5555;
+        }
+
+        .widget-content {
+            padding: 10px;
+            flex-grow: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        /* Custom scrollbar for widgets */
+        .widget-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .widget-content::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        .widget-content::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border: 1px solid var(--main-color);
+        }
+
+        /* --- UI ELEMENT STYLES --- */
+        button, input[type="text"], input[type="time"], textarea {
+            background-color: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            color: var(--main-color);
+            font-family: var(--font-family);
+            padding: 5px;
+            text-shadow: inherit;
+            outline: none;
+            font-size: 1rem;
+        }
+        
+        button {
+            cursor: pointer;
+            padding: 5px 10px;
+            text-transform: uppercase;
+        }
+        button:hover {
+            background-color: var(--border-color);
+            box-shadow: 0 0 8px var(--glow-color);
+        }
+        button:active {
+            background-color: var(--main-color);
+            color: var(--dark-bg);
+            text-shadow: none;
+        }
+        
+        input, textarea {
+            width: 100%;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border: 1px solid var(--main-color);
+            position: relative;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+        input[type="checkbox"]:checked::before {
+            content: 'X';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            line-height: 1;
+        }
+        
+        /* --- WIDGET SPECIFIC STYLES --- */
+
+        /* Clock */
+        #clock-widget .widget-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #clock-time {
+            font-size: 3.2rem;
+            letter-spacing: 2px;
+        }
+        #clock-date {
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        /* To-Do List */
+        #todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #todo-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        #todo-list li span {
+            flex-grow: 1;
+            margin-left: 10px;
+            cursor: text;
+        }
+        #todo-list li.done span {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        #todo-list .delete-task {
+            cursor: pointer;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        #todo-list .delete-task:hover {
+            color: #ff5555;
+        }
+        #new-task-input {
+            margin-top: 10px;
+        }
+
+        /* Timer & Stopwatch */
+        #timer-display, #stopwatch-display {
+            font-size: 2.4rem;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .controls, .timer-inputs {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        #lap-times {
+            list-style-type: decimal-leading-zero;
+            padding-left: 25px;
+            font-size: 1rem;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        /* Reminders */
+        #reminders-list { list-style: none; }
+        #reminders-list li { margin-bottom: 5px; }
+
+        /* Sound Player */
+        #volume-slider { width: 100%; }
+
+        /* Sticky Note */
+        .sticky-note {
+            background-color: rgba(50, 50, 20, 0.8); /* Yellowish tint */
+            border-color: #cccc99;
+            color: #ffffdd;
+            text-shadow: 0 0 2px #333;
+        }
+        .sticky-note .widget-header {
+            background-color: #cccc99;
+            color: var(--dark-bg);
+            text-shadow: none;
+        }
+        .sticky-note textarea {
+            background: transparent;
+            border: none;
+            resize: none;
+            height: 100%;
+            color: #ffffdd;
+            text-shadow: 0 0 2px #333;
+        }
+
+        /* Calendar */
+        #calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            text-align: center;
+        }
+        #calendar-grid div { padding: 3px; }
+        #calendar-grid .day-name { font-weight: bold; }
+        #calendar-grid .today { background-color: var(--border-color); }
+        
+        /* Progress Bar */
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            border: 1px solid var(--main-color);
+            background-color: var(--dark-bg);
+        }
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background-color: var(--main-color);
+            transition: width 0.5s ease-out;
+        }
+
+        /* --- UTILITY & OVERLAY STYLES --- */
+        #bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--border-color);
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            font-size: 1.1rem;
+        }
+        #bottom-bar-left, #bottom-bar-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        /* Custom Alert Modal */
+        #custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--dark-bg);
+            border: 2px solid var(--main-color);
+            box-shadow: 0 0 20px var(--glow-color);
+            padding: 20px;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            min-width: 300px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="desktop">
+
+        <!-- WIDGET: Clock -->
+        <div class="widget" id="clock-widget" data-id="clock-widget">
+            <div class="widget-header">
+                <span class="title">[ SYSTEM CLOCK ]</span>
+            </div>
+            <div class="widget-content">
+                <div id="clock-time">00:00:00</div>
+                <div id="clock-date">Sunday, January 1, 1970</div>
+            </div>
+        </div>
+
+        <!-- WIDGET: To-Do List -->
+        <div class="widget" id="todo-widget" data-id="todo-widget">
+            <div class="widget-header">
+                <span class="title">[ MISSION OBJECTIVES ]</span>
+            </div>
+            <div class="widget-content">
+                <ul id="todo-list"></ul>
+                <input type="text" id="new-task-input" placeholder="New objective...">
+            </div>
+        </div>
+
+        <!-- WIDGET: Timer & Stopwatch -->
+        <div class="widget" id="timer-stopwatch-widget" data-id="timer-stopwatch-widget">
+            <div class="widget-header">
+                <span class="title">[ CHRONOMETER ]</span>
+            </div>
+            <div class="widget-content">
+                <div><strong>TIMER</strong></div>
+                <div id="timer-display">00:00</div>
+                <div class="timer-inputs">
+                    <input type="text" id="timer-input" placeholder="MM:SS" style="width: 80px;">
+                    <button id="set-timer-btn">SET</button>
+                </div>
+                <div class="controls">
+                    <button id="timer-start-pause-btn">START</button>
+                    <button id="timer-reset-btn">RESET</button>
+                </div>
+                <hr style="border-color: var(--border-color); margin: 10px 0;">
+                <div><strong>STOPWATCH</strong></div>
+                <div id="stopwatch-display">00:00:00.00</div>
+                <div class="controls">
+                    <button id="stopwatch-start-pause-btn">START</button>
+                    <button id="stopwatch-lap-btn">LAP</button>
+                    <button id="stopwatch-reset-btn">RESET</button>
+                </div>
+                <ol id="lap-times"></ol>
+            </div>
+        </div>
+        
+        <!-- WIDGET: Reminders -->
+        <div class="widget" id="reminders-widget" data-id="reminders-widget">
+            <div class="widget-header">
+                <span class="title">[ MEMO-LOG ]</span>
+            </div>
+            <div class="widget-content">
+                <ul id="reminders-list"></ul>
+                <input type="text" id="reminder-msg" placeholder="Reminder message...">
+                <input type="time" id="reminder-time" style="margin-top: 5px;">
+                <button id="add-reminder-btn" style="margin-top: 5px; width: 100%;">ADD REMINDER</button>
+            </div>
+        </div>
+        
+        <!-- WIDGET: Sticky Notes -->
+        <div id="sticky-notes-container"></div>
+        
+        <!-- WIDGET: Calculator -->
+        <div class="widget" id="calculator-widget" data-id="calculator-widget">
+            <div class="widget-header"><span class="title">[ ARITHMETIC UNIT ]</span></div>
+            <div class="widget-content" style="padding: 5px;">
+                <input type="text" id="calc-display" readonly style="text-align: right; margin-bottom: 5px; font-size: 1.4rem; padding: 5px;">
+                <div id="calc-buttons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px;">
+                    <button class="calc-btn">7</button><button class="calc-btn">8</button><button class="calc-btn">9</button><button class="calc-btn op">/</button>
+                    <button class="calc-btn">4</button><button class="calc-btn">5</button><button class="calc-btn">6</button><button class="calc-btn op">*</button>
+                    <button class="calc-btn">1</button><button class="calc-btn">2</button><button class="calc-btn">3</button><button class="calc-btn op">-</button>
+                    <button class="calc-btn">0</button><button class="calc-btn">.</button><button id="calc-clear">C</button><button class="calc-btn op">+</button>
+                    <button id="calc-equals" style="grid-column: span 4;">=</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WIDGET: Daily Quote -->
+        <div class="widget" id="quote-widget" data-id="quote-widget">
+            <div class="widget-header"><span class="title">[ DAILY WISDOM ]</span></div>
+            <div class="widget-content" id="quote-content" style="font-size: 1.1rem; line-height: 1.5;"></div>
+        </div>
+        
+        <!-- WIDGET: Calendar -->
+        <div class="widget" id="calendar-widget" data-id="calendar-widget">
+            <div class="widget-header"><span class="title">[ DATE LOG ]</span></div>
+            <div class="widget-content">
+                <div id="calendar-header" style="text-align: center; margin-bottom: 10px; font-weight: bold;"></div>
+                <div id="calendar-grid"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTTOM BAR FOR GLOBAL CONTROLS -->
+    <div id="bottom-bar">
+        <div id="bottom-bar-left">
+            <button id="add-note-btn">+ NOTE</button>
+            <div id="sound-player">
+                <span>SOUND:</span>
+                <button id="sound-toggle-btn">OFF</button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" style="vertical-align: middle; width: 80px;">
+            </div>
+        </div>
+        <div id="bottom-bar-right">
+             <!-- Day Progress -->
+            <div id="day-progress-container" style="display: flex; align-items: center; gap: 5px;">
+                <span>DAY:</span>
+                <div class="progress-bar-container" style="width: 100px; height: 15px;">
+                    <div id="day-progress-fill" class="progress-bar-fill"></div>
+                </div>
+            </div>
+            <!-- Battery -->
+            <div id="battery-status">BAT: N/A</div>
+            <!-- Network Status -->
+            <div id="network-status">NET: OFFLINE</div>
+            <button id="fullscreen-btn">FULLSCREEN</button>
+        </div>
+    </div>
+    
+    <!-- CUSTOM ALERT MODAL -->
+    <div id="custom-alert">
+        <div id="custom-alert-message"></div>
+        <button id="custom-alert-ok">OK</button>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- CORE VARIABLES & CONFIG ---
+    const desktop = document.getElementById('desktop');
+    const widgets = document.querySelectorAll('.widget');
+    const storagePrefix = 'retroTerminal_';
+    
+    // --- AUDIO SETUP ---
+    const audio = {
+        context: null,
+        masterGain: null,
+        hum: null,
+        lfo: null,
+        isPlaying: false,
+    };
+
+    function initAudioSystem() {
+        if (audio.context) return;
+        try {
+            audio.context = new (window.AudioContext || window.webkitAudioContext)();
+            audio.masterGain = audio.context.createGain();
+            audio.masterGain.connect(audio.context.destination);
+            
+            const volumeSlider = document.getElementById('volume-slider');
+            audio.masterGain.gain.value = volumeSlider.value;
+            
+            volumeSlider.addEventListener('input', () => {
+                if (audio.masterGain) {
+                    audio.masterGain.gain.setValueAtTime(parseFloat(volumeSlider.value), audio.context.currentTime);
+                }
+            });
+        } catch (e) {
+            console.error("Web Audio API is not supported.", e);
+            document.getElementById('sound-player').style.display = 'none';
+        }
+    }
+    // Set up a one-time listener for the first user interaction.
+    document.body.addEventListener('click', initAudioSystem, { once: true });
+
+    // --- UTILITY FUNCTIONS ---
+    const playSound = (type) => {
+        if (!audio.context || !audio.masterGain) return;
+        if (audio.context.state === 'suspended') {
+            audio.context.resume();
+        }
+
+        const sound = audio.context.createOscillator();
+        const gainNode = audio.context.createGain();
+        sound.connect(gainNode);
+        gainNode.connect(audio.masterGain);
+        gainNode.gain.setValueAtTime(audio.masterGain.gain.value, audio.context.currentTime);
+
+        if (type === 'click') {
+            sound.type = 'triangle';
+            sound.frequency.setValueAtTime(440, audio.context.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audio.context.currentTime + 0.2);
+            sound.start(audio.context.currentTime);
+            sound.stop(audio.context.currentTime + 0.2);
+        } else if (type === 'notify') {
+            sound.type = 'sine';
+            sound.frequency.setValueAtTime(880, audio.context.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audio.context.currentTime + 0.5);
+            sound.start(audio.context.currentTime);
+            sound.stop(audio.context.currentTime + 0.5);
+        }
+    };
+    
+    const showAlert = (message) => {
+        playSound('notify');
+        const alertModal = document.getElementById('custom-alert');
+        document.getElementById('custom-alert-message').textContent = message;
+        alertModal.style.display = 'flex';
+    };
+    
+    document.getElementById('custom-alert-ok').addEventListener('click', () => {
+        document.getElementById('custom-alert').style.display = 'none';
+        playSound('click');
+    });
+
+    // --- DRAGGABLE & RESIZABLE WIDGET LOGIC ---
+    function makeWidgetInteractive(widget) {
+        const header = widget.querySelector('.widget-header');
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (header) {
+            header.onmousedown = dragMouseDown;
+        }
+        function dragMouseDown(e) {
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+        function elementDrag(e) {
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            widget.style.top = (widget.offsetTop - pos2) + "px";
+            widget.style.left = (widget.offsetLeft - pos1) + "px";
+        }
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+            saveWidgetState();
+        }
+        new ResizeObserver(saveWidgetState).observe(widget);
+    }
+    widgets.forEach(makeWidgetInteractive);
+
+    // --- LOCALSTORAGE & STATE MANAGEMENT ---
+    function saveWidgetState() {
+        const positions = {};
+        document.querySelectorAll('.widget').forEach(w => {
+            if(w.dataset.id) {
+                 positions[w.dataset.id] = {
+                    top: w.style.top,
+                    left: w.style.left,
+                    width: w.style.width,
+                    height: w.style.height,
+                };
+            }
+        });
+        localStorage.setItem(storagePrefix + 'widgetPositions', JSON.stringify(positions));
+    }
+
+    function loadWidgetState() {
+        const positions = JSON.parse(localStorage.getItem(storagePrefix + 'widgetPositions'));
+        if (positions) {
+            Object.keys(positions).forEach(id => {
+                const widget = document.querySelector(`[data-id='${id}']`);
+                if (widget) {
+                    widget.style.top = positions[id].top || '';
+                    widget.style.left = positions[id].left || '';
+                    widget.style.width = positions[id].width || '';
+                    widget.style.height = positions[id].height || '';
+                }
+            });
+        } else {
+            // Default positions for first-time load
+            document.getElementById('clock-widget').style.cssText = 'top: 20px; left: 20px; width: 350px; height: 150px;';
+            document.getElementById('todo-widget').style.cssText = 'top: 180px; left: 20px; width: 350px; height: 300px;';
+            document.getElementById('timer-stopwatch-widget').style.cssText = 'top: 20px; left: 390px; width: 300px; height: 350px;';
+            document.getElementById('reminders-widget').style.cssText = 'top: 380px; left: 390px; width: 300px; height: 220px;';
+            document.getElementById('calculator-widget').style.cssText = 'top: 490px; left: 20px; width: 250px; height: auto;';
+            document.getElementById('quote-widget').style.cssText = 'top: 20px; right: 20px; left: auto; width: 300px; height: 150px;';
+            document.getElementById('calendar-widget').style.cssText = 'top: 180px; right: 20px; left: auto; width: 300px; height: auto;';
+        }
+    }
+
+    // --- WIDGET INITIALIZATION ---
+
+    // 1. Digital Clock & Date
+    (function initClock() {
+        const timeEl = document.getElementById('clock-time');
+        const dateEl = document.getElementById('clock-date');
+        function updateClock() {
+            const now = new Date();
+            timeEl.textContent = now.toLocaleTimeString('en-GB');
+            dateEl.textContent = now.toLocaleDateString(undefined, { 
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+            });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    })();
+
+    // 2. To-Do List
+    (function initTodo() {
+        const listEl = document.getElementById('todo-list');
+        const inputEl = document.getElementById('new-task-input');
+        let tasks = JSON.parse(localStorage.getItem(storagePrefix + 'tasks')) || [];
+        function saveTasks() {
+            localStorage.setItem(storagePrefix + 'tasks', JSON.stringify(tasks));
+        }
+        function renderTasks() {
+            listEl.innerHTML = '';
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = task.done ? 'done' : '';
+                li.innerHTML = `
+                    <input type="checkbox" data-index="${index}" ${task.done ? 'checked' : ''}>
+                    <span contenteditable="true" data-index="${index}">${task.text}</span>
+                    <span class="delete-task" data-index="${index}">[X]</span>
+                `;
+                listEl.appendChild(li);
+            });
+        }
+        inputEl.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && inputEl.value.trim() !== '') {
+                tasks.push({ text: inputEl.value.trim(), done: false });
+                inputEl.value = '';
+                saveTasks();
+                renderTasks();
+            }
+        });
+        listEl.addEventListener('click', (e) => {
+            const index = e.target.dataset.index;
+            if (e.target.matches('.delete-task') || e.target.matches('input[type="checkbox"]')) {
+                if (e.target.matches('.delete-task')) {
+                    tasks.splice(index, 1);
+                } else {
+                    tasks[index].done = !tasks[index].done;
+                }
+                saveTasks();
+                renderTasks();
+            }
+        });
+        listEl.addEventListener('blur', (e) => {
+            if (e.target.matches('span[contenteditable]')) {
+                tasks[e.target.dataset.index].text = e.target.textContent;
+                saveTasks();
+            }
+        }, true);
+        renderTasks();
+    })();
+
+    // 3. Timer & Stopwatch
+    (function initTimerStopwatch() {
+        const timerDisplay = document.getElementById('timer-display');
+        const timerInput = document.getElementById('timer-input');
+        const setTimerBtn = document.getElementById('set-timer-btn');
+        const startPauseTimerBtn = document.getElementById('timer-start-pause-btn');
+        const resetTimerBtn = document.getElementById('timer-reset-btn');
+        let timerInterval, timerSeconds = 0, isTimerRunning = false, totalTimerSeconds = 0;
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+            const secs = (timerSeconds % 60).toString().padStart(2, '0');
+            timerDisplay.textContent = `${mins}:${secs}`;
+        }
+        setTimerBtn.addEventListener('click', () => {
+            const parts = timerInput.value.split(':');
+            totalTimerSeconds = (parseInt(parts[0], 10) || 0) * 60 + (parseInt(parts[1], 10) || 0);
+            timerSeconds = totalTimerSeconds;
+            updateTimerDisplay();
+        });
+        startPauseTimerBtn.addEventListener('click', () => {
+            isTimerRunning = !isTimerRunning;
+            if (isTimerRunning) {
+                if (timerSeconds <= 0) timerSeconds = totalTimerSeconds;
+                if (timerSeconds > 0) {
+                    startPauseTimerBtn.textContent = 'PAUSE';
+                    timerInterval = setInterval(() => {
+                        timerSeconds--;
+                        updateTimerDisplay();
+                        if (timerSeconds <= 0) {
+                            clearInterval(timerInterval);
+                            isTimerRunning = false;
+                            startPauseTimerBtn.textContent = 'START';
+                            showAlert('Timer finished!');
+                        }
+                    }, 1000);
+                } else {
+                    isTimerRunning = false; // can't start a 0s timer
+                }
+            } else {
+                clearInterval(timerInterval);
+                startPauseTimerBtn.textContent = 'RESUME';
+            }
+        });
+        resetTimerBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerSeconds = totalTimerSeconds;
+            startPauseTimerBtn.textContent = 'START';
+            updateTimerDisplay();
+        });
+
+        const stopwatchDisplay = document.getElementById('stopwatch-display');
+        const startPauseStopwatchBtn = document.getElementById('stopwatch-start-pause-btn');
+        const lapBtn = document.getElementById('stopwatch-lap-btn');
+        const resetStopwatchBtn = document.getElementById('stopwatch-reset-btn');
+        const lapTimesList = document.getElementById('lap-times');
+        let stopwatchInterval, stopwatchTime = 0, isStopwatchRunning = false;
+        function formatStopwatchTime(time) {
+            const ms = Math.floor((time % 1000) / 10).toString().padStart(2, '0');
+            const secs = Math.floor((time / 1000) % 60).toString().padStart(2, '0');
+            const mins = Math.floor((time / (1000 * 60)) % 60).toString().padStart(2, '0');
+            return `${mins}:${secs}.${ms}`;
+        }
+        startPauseStopwatchBtn.addEventListener('click', () => {
+            isStopwatchRunning = !isStopwatchRunning;
+            if (isStopwatchRunning) {
+                startPauseStopwatchBtn.textContent = 'PAUSE';
+                const startTime = Date.now() - stopwatchTime;
+                stopwatchInterval = setInterval(() => {
+                    stopwatchTime = Date.now() - startTime;
+                    stopwatchDisplay.textContent = formatStopwatchTime(stopwatchTime);
+                }, 10);
+            } else {
+                clearInterval(stopwatchInterval);
+                startPauseStopwatchBtn.textContent = 'RESUME';
+            }
+        });
+        lapBtn.addEventListener('click', () => {
+            if (isStopwatchRunning) {
+                const li = document.createElement('li');
+                li.textContent = formatStopwatchTime(stopwatchTime);
+                lapTimesList.prepend(li);
+            }
+        });
+        resetStopwatchBtn.addEventListener('click', () => {
+            clearInterval(stopwatchInterval);
+            isStopwatchRunning = false;
+            stopwatchTime = 0;
+            startPauseStopwatchBtn.textContent = 'START';
+            stopwatchDisplay.textContent = '00:00:00.00';
+            lapTimesList.innerHTML = '';
+        });
+    })();
+    
+    // 4. Reminders Panel
+    (function initReminders() {
+        const listEl = document.getElementById('reminders-list');
+        const msgInput = document.getElementById('reminder-msg');
+        const timeInput = document.getElementById('reminder-time');
+        const addBtn = document.getElementById('add-reminder-btn');
+        let reminders = JSON.parse(localStorage.getItem(storagePrefix + 'reminders')) || [];
+        function saveReminders() {
+            localStorage.setItem(storagePrefix + 'reminders', JSON.stringify(reminders));
+        }
+        function renderReminders() {
+            listEl.innerHTML = '';
+            reminders.sort((a,b) => a.time.localeCompare(b.time));
+            reminders.forEach((reminder, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `[${reminder.time}] ${reminder.msg} <span class="delete-reminder" data-id="${index}" style="cursor:pointer; float:right;">[X]</span>`;
+                listEl.appendChild(li);
+            });
+        }
+        listEl.addEventListener('click', (e) => {
+            if (e.target.matches('.delete-reminder')) {
+                reminders.splice(e.target.dataset.id, 1);
+                saveReminders();
+                renderReminders();
+            }
+        });
+        addBtn.addEventListener('click', () => {
+            if (msgInput.value.trim() && timeInput.value) {
+                reminders.push({ msg: msgInput.value.trim(), time: timeInput.value, triggered: false });
+                saveReminders();
+                renderReminders();
+                msgInput.value = '';
+                timeInput.value = '';
+            }
+        });
+        function checkReminders() {
+            const currentTime = new Date().toTimeString().substring(0, 5); // HH:MM
+            let remindersChanged = false;
+            reminders.forEach(reminder => {
+                if (!reminder.triggered && reminder.time === currentTime) {
+                    showAlert(`REMINDER: ${reminder.msg}`);
+                    reminder.triggered = true;
+                    remindersChanged = true;
+                }
+            });
+            if (currentTime === '00:00') {
+                reminders.forEach(r => { if (r.triggered) { r.triggered = false; remindersChanged = true; }});
+            }
+            if (remindersChanged) saveReminders();
+        }
+        setInterval(checkReminders, 1000);
+        renderReminders();
+    })();
+
+    // 5. Ambient Sound Player
+    (function initSound() {
+        const toggleBtn = document.getElementById('sound-toggle-btn');
+
+        function startHum() {
+            if (!audio.context || audio.isPlaying) return;
+
+            // Create a smoother sine wave for the hum
+            audio.hum = audio.context.createOscillator();
+            audio.hum.type = 'sine'; // CHANGED from 'sawtooth'
+            audio.hum.frequency.setValueAtTime(60, audio.context.currentTime); // 60Hz is a common, less harsh hum
+            
+            const humGain = audio.context.createGain();
+            humGain.gain.setValueAtTime(0.15, audio.context.currentTime); // REDUCED gain
+
+            // Use a sine wave LFO for smoother volume modulation
+            audio.lfo = audio.context.createOscillator();
+            audio.lfo.type = 'sine'; // CHANGED from 'square'
+            audio.lfo.frequency.setValueAtTime(0.3, audio.context.currentTime);
+            
+            const lfoGain = audio.context.createGain();
+            lfoGain.gain.setValueAtTime(0.04, audio.context.currentTime);
+
+            // Connect nodes
+            audio.lfo.connect(lfoGain).connect(humGain.gain);
+            audio.hum.connect(humGain).connect(audio.masterGain);
+            
+            audio.hum.start(0);
+            audio.lfo.start(0);
+            
+            audio.isPlaying = true;
+            toggleBtn.textContent = 'ON';
+        }
+
+        function stopHum() {
+            if (!audio.isPlaying || !audio.hum) return;
+            audio.hum.stop(0);
+            audio.lfo.stop(0);
+            audio.isPlaying = false;
+            audio.hum = null; // Important: discard the used oscillators
+            audio.lfo = null;
+            toggleBtn.textContent = 'OFF';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            if (!audio.context) return;
+            if (audio.context.state === 'suspended') audio.context.resume();
+
+            if (audio.isPlaying) {
+                stopHum();
+            } else {
+                startHum();
+            }
+            playSound('click'); // Play click sound specifically for this button
+        });
+    })();
+
+    // 6. Fullscreen Toggle
+    (function initFullscreen() {
+        const btn = document.getElementById('fullscreen-btn');
+        btn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    showAlert(`Error: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    })();
+    
+    // 7. Sticky Notes
+    (function initStickyNotes() {
+        const container = document.getElementById('sticky-notes-container');
+        const addBtn = document.getElementById('add-note-btn');
+        let notes = JSON.parse(localStorage.getItem(storagePrefix + 'notes')) || [];
+        let noteCounter = notes.length > 0 ? Math.max(0, ...notes.map(n => parseInt(n.id.split('-')[1]))) + 1 : 0;
+
+        function saveNotesState() {
+            notes.forEach(noteData => {
+                const noteEl = document.getElementById(noteData.id);
+                if (noteEl) {
+                    noteData.left = noteEl.style.left;
+                    noteData.top = noteEl.style.top;
+                    noteData.width = noteEl.style.width;
+                    noteData.height = noteEl.style.height;
+                    noteData.content = noteEl.querySelector('textarea').value;
+                }
+            });
+            localStorage.setItem(storagePrefix + 'notes', JSON.stringify(notes));
+        }
+
+        function createNoteElement(note) {
+            const noteEl = document.createElement('div');
+            noteEl.className = 'widget sticky-note';
+            noteEl.id = note.id;
+            noteEl.dataset.id = note.id;
+            noteEl.style.left = note.left;
+            noteEl.style.top = note.top;
+            noteEl.style.width = note.width;
+            noteEl.style.height = note.height;
+            noteEl.innerHTML = `
+                <div class="widget-header">
+                    <span class="title">[ STICKY ]</span>
+                    <span class="close-btn" data-id="${note.id}">X</span>
+                </div>
+                <div class="widget-content">
+                    <textarea>${note.content}</textarea>
+                </div>
+            `;
+            container.appendChild(noteEl);
+            makeWidgetInteractive(noteEl);
+            noteEl.querySelector('.close-btn').addEventListener('click', () => {
+                notes = notes.filter(n => n.id !== note.id);
+                noteEl.remove();
+                saveNotesState();
+            });
+            noteEl.querySelector('textarea').addEventListener('input', saveNotesState);
+            new ResizeObserver(saveNotesState).observe(noteEl);
+        }
+
+        addBtn.addEventListener('click', () => {
+            const newNote = {
+                id: `note-${noteCounter++}`,
+                content: '',
+                top: '100px',
+                left: `${100 + ((noteCounter-1) % 5) * 20}px`,
+                width: '200px',
+                height: '200px'
+            };
+            notes.push(newNote);
+            createNoteElement(newNote);
+            saveNotesState();
+        });
+        notes.forEach(createNoteElement);
+    })();
+    
+    // 8. Bonus Widgets
+    // Mini-calculator
+    (function initCalculator() {
+        const display = document.getElementById('calc-display');
+        let currentInput = '';
+        let operator = '';
+        let firstOperand = null;
+        let shouldResetDisplay = false;
+
+        document.getElementById('calc-buttons').addEventListener('click', (e) => {
+            if (!e.target.matches('button')) return;
+            const action = e.target.textContent;
+            
+            if (e.target.matches('.calc-btn') && !e.target.matches('.op')) {
+                if (shouldResetDisplay) { currentInput = ''; shouldResetDisplay = false; }
+                currentInput += action;
+                display.value = currentInput;
+            } else if (e.target.matches('.op')) {
+                if (operator && !shouldResetDisplay && currentInput) {
+                    const result = calculate(firstOperand, parseFloat(currentInput), operator);
+                    display.value = result;
+                    firstOperand = result;
+                } else {
+                    firstOperand = parseFloat(currentInput) || firstOperand;
+                }
+                currentInput = '';
+                operator = action;
+                shouldResetDisplay = true;
+            } else if (e.target.id === 'calc-equals') {
+                if (operator && firstOperand !== null && currentInput) {
+                    const result = calculate(firstOperand, parseFloat(currentInput), operator);
+                    display.value = result;
+                    currentInput = result.toString();
+                    firstOperand = null;
+                    operator = '';
+                    shouldResetDisplay = true;
+                }
+            } else if (e.target.id === 'calc-clear') {
+                currentInput = ''; operator = ''; firstOperand = null; display.value = ''; shouldResetDisplay = false;
+            }
+        });
+        function calculate(a, b, op) {
+            if (isNaN(a) || isNaN(b)) return 'Error';
+            switch (op) {
+                case '+': return a + b; case '-': return a - b;
+                case '*': return a * b; case '/': return b === 0 ? 'Error' : a / b;
+                default: return b;
+            }
+        }
+    })();
+
+    // Random daily quote
+    (function initQuote() {
+        const quotes = [
+            "War. War never changes.", "The hard part isn't finding a purpose. It's knowing what to do with it.",
+            "The thing about happiness is that you only know you had it when it's gone.",
+            "It's a dog-eat-dog world, and I'm wearing Milk-Bone underwear.",
+            "The future's not set. There's no fate but what we make for ourselves.",
+            "May the flame of this candle lighten your way."
+        ];
+        const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+        document.getElementById('quote-content').textContent = `"${quotes[dayOfYear % quotes.length]}"`;
+    })();
+    
+    // Simple calendar
+    (function initCalendar() {
+        const headerEl = document.getElementById('calendar-header');
+        const gridEl = document.getElementById('calendar-grid');
+        const now = new Date();
+        const month = now.getMonth();
+        const year = now.getFullYear();
+        headerEl.textContent = now.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }).toUpperCase();
+        gridEl.innerHTML = '';
+        const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+        dayNames.forEach(day => {
+            const dayEl = document.createElement('div');
+            dayEl.className = 'day-name';
+            dayEl.textContent = day;
+            gridEl.appendChild(dayEl);
+        });
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        for (let i = 0; i < firstDay; i++) { gridEl.appendChild(document.createElement('div')); }
+        for (let i = 1; i <= daysInMonth; i++) {
+            const dayEl = document.createElement('div');
+            dayEl.textContent = i;
+            if (i === now.getDate()) dayEl.className = 'today';
+            gridEl.appendChild(dayEl);
+        }
+    })();
+    
+    // Day progress bar
+    (function initDayProgress() {
+        const fillEl = document.getElementById('day-progress-fill');
+        function update() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const percentage = ((now - start) / 86400000) * 100;
+            fillEl.style.width = `${percentage}%`;
+        }
+        setInterval(update, 60000);
+        update();
+    })();
+
+    // Network status
+    (function initNetworkStatus() {
+        const statusEl = document.getElementById('network-status');
+        function updateOnlineStatus() {
+            statusEl.textContent = `NET: ${navigator.onLine ? 'ONLINE' : 'OFFLINE'}`;
+            statusEl.style.color = navigator.onLine ? 'var(--main-color)' : '#ff5555';
+        }
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+    })();
+
+    // Battery level
+    (function initBattery() {
+        const batteryEl = document.getElementById('battery-status');
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(battery => {
+                function updateBatteryStatus() {
+                    const level = Math.floor(battery.level * 100);
+                    batteryEl.textContent = `BAT: ${level}% ${battery.charging ? '(CHR)' : ''}`;
+                    batteryEl.style.color = (level < 20 && !battery.charging) ? '#ff5555' : 'var(--main-color)';
+                }
+                battery.addEventListener('levelchange', updateBatteryStatus);
+                battery.addEventListener('chargingchange', updateBatteryStatus);
+                updateBatteryStatus();
+            });
+        }
+    })();
+
+    // --- GLOBAL EVENT LISTENERS & INITIAL LOAD ---
+    // Delegated event listener for all button clicks to play sound
+    document.body.addEventListener('click', (e) => {
+        if (e.target.matches('button') && e.target.id !== 'sound-toggle-btn' && e.target.id !== 'custom-alert-ok') {
+            playSound('click');
+        }
+    });
+
+    loadWidgetState();
+});
+</script>
+
+</body>
+</html>
