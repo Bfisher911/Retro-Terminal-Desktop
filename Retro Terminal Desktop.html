@@ -9,15 +9,16 @@
     Author: Gemini
     Created for: Blaine Fisher
     Date: 2025-07-07
-    Version: 1.3
+    Version: 1.4
 
     Features:
     - Single-file, offline-first HTML/CSS/JS application.
     - Retro green-on-black "Fallout/Pip-Boy" terminal aesthetic.
-    - Draggable and resizable widgets.
+    - Draggable and resizable widgets with boundary detection.
+    - Collapsible widgets.
     - Widgets: Clock, To-Do List, Timer/Stopwatch, Reminders, Sticky Notes,
       Calculator, Daily Quote, Calendar, Day Progress, Network Status, Battery.
-    - Data persistence using localStorage for To-Dos, Notes, and widget positions.
+    - Data persistence using localStorage for To-Dos, Notes, and widget state (position, size, collapsed).
     - No external libraries or dependencies. Vanilla JavaScript.
     - Custom retro sound effects generated with Web Audio API.
     - CRT scanline and flicker effects via CSS.
@@ -28,7 +29,7 @@
             font-family: 'Press Start 2P';
             font-style: normal;
             font-weight: 400;
-            src: url(data:font/woff2;base64,d09GMgABAAAAAAYMAAsAAAAACyAAAAV4AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAVA1iWAIICg4ACAE2AiQDBgsEAAQgBYsdByAbfA3ILH8jB691jVzYIBwVkv9//z/u3b4bY2aT4KNgojHAEIifkUe3zdsx5g8SgQAjE2OfBAwE+QkQJG4EFpXpT8P//3/y/9v/P/7f+f/z/+//v/7/+//3/9//v/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7-2.0.0.css) format('woff2');
+            src: url(data:font/woff2;base64,d09GMgABAAAAAAYMAAsAAAAACyAAAAV4AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAVA1iWAIICg4ACAE2AiQDBgsEAAQgBYsdByAbfA3ILH8jB691jVzYIBwVkv9//z/u3b4bY2aT4KNgojHAEIifkUe3zdsx5g8SgQAjE2OfBAwE+QkQJG4EFpXpT8P//3/y/9v/P/7f+f/z/+//v/7/+//3/9//v/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7-2.0.0.css) format('woff2');
         }
 
         /* --- GLOBAL STYLES & CRT EFFECT --- */
@@ -134,12 +135,22 @@
             text-transform: uppercase;
         }
         
-        .widget-header .close-btn {
+        .widget-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .widget-controls span {
             cursor: pointer;
             font-weight: bold;
             padding: 0 4px;
         }
-        .widget-header .close-btn:hover {
+        .widget-controls .collapse-btn:hover {
+            color: #ffff88;
+            text-shadow: 0 0 5px #ffff88;
+        }
+        .widget-controls .close-btn:hover {
             color: #ff5555;
             text-shadow: 0 0 5px #ff5555;
         }
@@ -151,6 +162,15 @@
             overflow-x: hidden;
         }
         
+        .widget.collapsed .widget-content {
+            display: none;
+        }
+        .widget.collapsed {
+            height: auto !important; /* Override inline style from resize/drag */
+            min-height: 0;
+            resize: none;
+        }
+
         /* Custom scrollbar for widgets */
         .widget-content::-webkit-scrollbar {
             width: 8px;
@@ -385,6 +405,7 @@
         <div class="widget" id="clock-widget" data-id="clock-widget">
             <div class="widget-header">
                 <span class="title">[ SYSTEM CLOCK ]</span>
+                <div class="widget-controls"><span class="collapse-btn">[-]</span></div>
             </div>
             <div class="widget-content">
                 <div id="clock-time">00:00:00</div>
@@ -396,6 +417,7 @@
         <div class="widget" id="todo-widget" data-id="todo-widget">
             <div class="widget-header">
                 <span class="title">[ MISSION OBJECTIVES ]</span>
+                <div class="widget-controls"><span class="collapse-btn">[-]</span></div>
             </div>
             <div class="widget-content">
                 <ul id="todo-list"></ul>
@@ -407,6 +429,7 @@
         <div class="widget" id="timer-stopwatch-widget" data-id="timer-stopwatch-widget">
             <div class="widget-header">
                 <span class="title">[ CHRONOMETER ]</span>
+                <div class="widget-controls"><span class="collapse-btn">[-]</span></div>
             </div>
             <div class="widget-content">
                 <div><strong>TIMER</strong></div>
@@ -435,6 +458,7 @@
         <div class="widget" id="reminders-widget" data-id="reminders-widget">
             <div class="widget-header">
                 <span class="title">[ MEMO-LOG ]</span>
+                <div class="widget-controls"><span class="collapse-btn">[-]</span></div>
             </div>
             <div class="widget-content">
                 <ul id="reminders-list"></ul>
@@ -449,7 +473,10 @@
         
         <!-- WIDGET: Calculator -->
         <div class="widget" id="calculator-widget" data-id="calculator-widget">
-            <div class="widget-header"><span class="title">[ ARITHMETIC UNIT ]</span></div>
+            <div class="widget-header">
+                <span class="title">[ ARITHMETIC UNIT ]</span>
+                <div class="widget-controls"><span class="collapse-btn">[-]</span></div>
+            </div>
             <div class="widget-content" style="padding: 5px;">
                 <input type="text" id="calc-display" readonly style="text-align: right; margin-bottom: 5px; font-size: 1.4rem; padding: 5px;">
                 <div id="calc-buttons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px;">
@@ -464,13 +491,19 @@
 
         <!-- WIDGET: Daily Quote -->
         <div class="widget" id="quote-widget" data-id="quote-widget">
-            <div class="widget-header"><span class="title">[ DAILY WISDOM ]</span></div>
+            <div class="widget-header">
+                <span class="title">[ DAILY WISDOM ]</span>
+                <div class="widget-controls"><span class="collapse-btn">[-]</span></div>
+            </div>
             <div class="widget-content" id="quote-content" style="font-size: 1.1rem; line-height: 1.5;"></div>
         </div>
         
         <!-- WIDGET: Calendar -->
         <div class="widget" id="calendar-widget" data-id="calendar-widget">
-            <div class="widget-header"><span class="title">[ DATE LOG ]</span></div>
+            <div class="widget-header">
+                <span class="title">[ DATE LOG ]</span>
+                <div class="widget-controls"><span class="collapse-btn">[-]</span></div>
+            </div>
             <div class="widget-content">
                 <div id="calendar-header" style="text-align: center; margin-bottom: 10px; font-weight: bold;"></div>
                 <div id="calendar-grid"></div>
@@ -591,34 +624,74 @@ document.addEventListener('DOMContentLoaded', () => {
         playSound('click');
     });
 
-    // --- DRAGGABLE & RESIZABLE WIDGET LOGIC ---
+    // --- DRAGGABLE, RESIZABLE, & COLLAPSIBLE WIDGET LOGIC ---
     function makeWidgetInteractive(widget) {
         const header = widget.querySelector('.widget-header');
+        const collapseBtn = widget.querySelector('.collapse-btn');
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        // Make header draggable
         if (header) {
             header.onmousedown = dragMouseDown;
         }
+
+        // Make widget collapsible
+        if (collapseBtn) {
+            collapseBtn.onclick = (e) => {
+                e.stopPropagation(); // Prevent drag from starting
+                widget.classList.toggle('collapsed');
+                collapseBtn.textContent = widget.classList.contains('collapsed') ? '[+]' : '[-]';
+                saveWidgetState(); // Save state after action
+            };
+        }
+
         function dragMouseDown(e) {
+            // only drag with left mouse button, and not on controls
+            if (e.button !== 0 || e.target.closest('.widget-controls')) return;
+            
             e.preventDefault();
             pos3 = e.clientX;
             pos4 = e.clientY;
             document.onmouseup = closeDragElement;
             document.onmousemove = elementDrag;
         }
+
         function elementDrag(e) {
             e.preventDefault();
             pos1 = pos3 - e.clientX;
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
-            widget.style.top = (widget.offsetTop - pos2) + "px";
-            widget.style.left = (widget.offsetLeft - pos1) + "px";
+
+            // --- NEW BOUNDARY DETECTION LOGIC ---
+            const desktopRect = desktop.getBoundingClientRect();
+            let newTop = widget.offsetTop - pos2;
+            let newLeft = widget.offsetLeft - pos1;
+
+            // Clamp top boundary
+            if (newTop < 0) newTop = 0;
+            // Clamp left boundary
+            if (newLeft < 0) newLeft = 0;
+            // Clamp bottom boundary
+            if (newTop + widget.offsetHeight > desktopRect.height) {
+                newTop = desktopRect.height - widget.offsetHeight;
+            }
+            // Clamp right boundary
+            if (newLeft + widget.offsetWidth > desktopRect.width) {
+                newLeft = desktopRect.width - widget.offsetWidth;
+            }
+
+            widget.style.top = newTop + "px";
+            widget.style.left = newLeft + "px";
         }
+
         function closeDragElement() {
             document.onmouseup = null;
             document.onmousemove = null;
-            saveWidgetState();
+            saveWidgetState(); // Save state after dragging
         }
+        
+        // Save state on resize
         new ResizeObserver(saveWidgetState).observe(widget);
     }
     widgets.forEach(makeWidgetInteractive);
@@ -626,15 +699,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- LOCALSTORAGE & STATE MANAGEMENT ---
     function saveWidgetState() {
         const positions = {};
-        document.querySelectorAll('.widget').forEach(w => {
-            if(w.dataset.id) {
-                 positions[w.dataset.id] = {
-                    top: w.style.top,
-                    left: w.style.left,
-                    width: w.style.width,
-                    height: w.style.height,
-                };
-            }
+        document.querySelectorAll('.widget[data-id]').forEach(w => {
+            positions[w.dataset.id] = {
+                top: w.style.top,
+                left: w.style.left,
+                width: w.style.width,
+                height: w.style.height,
+                collapsed: w.classList.contains('collapsed') // Save collapsed state
+            };
         });
         localStorage.setItem(storagePrefix + 'widgetPositions', JSON.stringify(positions));
     }
@@ -649,6 +721,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     widget.style.left = positions[id].left || '';
                     widget.style.width = positions[id].width || '';
                     widget.style.height = positions[id].height || '';
+                    
+                    // Restore collapsed state
+                    if (positions[id].collapsed) {
+                        widget.classList.add('collapsed');
+                        const btn = widget.querySelector('.collapse-btn');
+                        if (btn) btn.textContent = '[+]';
+                    }
                 }
             });
         } else {
@@ -884,30 +963,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function startHum() {
             if (!audio.context || audio.isPlaying) return;
-
-            // Create a smoother sine wave for the hum
             audio.hum = audio.context.createOscillator();
-            audio.hum.type = 'sine'; // CHANGED from 'sawtooth'
-            audio.hum.frequency.setValueAtTime(60, audio.context.currentTime); // 60Hz is a common, less harsh hum
-            
+            audio.hum.type = 'sine';
+            audio.hum.frequency.setValueAtTime(60, audio.context.currentTime);
             const humGain = audio.context.createGain();
-            humGain.gain.setValueAtTime(0.15, audio.context.currentTime); // REDUCED gain
-
-            // Use a sine wave LFO for smoother volume modulation
+            humGain.gain.setValueAtTime(0.15, audio.context.currentTime);
             audio.lfo = audio.context.createOscillator();
-            audio.lfo.type = 'sine'; // CHANGED from 'square'
+            audio.lfo.type = 'sine';
             audio.lfo.frequency.setValueAtTime(0.3, audio.context.currentTime);
-            
             const lfoGain = audio.context.createGain();
             lfoGain.gain.setValueAtTime(0.04, audio.context.currentTime);
-
-            // Connect nodes
             audio.lfo.connect(lfoGain).connect(humGain.gain);
             audio.hum.connect(humGain).connect(audio.masterGain);
-            
             audio.hum.start(0);
             audio.lfo.start(0);
-            
             audio.isPlaying = true;
             toggleBtn.textContent = 'ON';
         }
@@ -917,7 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.hum.stop(0);
             audio.lfo.stop(0);
             audio.isPlaying = false;
-            audio.hum = null; // Important: discard the used oscillators
+            audio.hum = null;
             audio.lfo = null;
             toggleBtn.textContent = 'OFF';
         }
@@ -925,13 +994,8 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleBtn.addEventListener('click', () => {
             if (!audio.context) return;
             if (audio.context.state === 'suspended') audio.context.resume();
-
-            if (audio.isPlaying) {
-                stopHum();
-            } else {
-                startHum();
-            }
-            playSound('click'); // Play click sound specifically for this button
+            if (audio.isPlaying) stopHum(); else startHum();
+            playSound('click');
         });
     })();
 
@@ -965,6 +1029,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     noteData.width = noteEl.style.width;
                     noteData.height = noteEl.style.height;
                     noteData.content = noteEl.querySelector('textarea').value;
+                    noteData.collapsed = noteEl.classList.contains('collapsed');
                 }
             });
             localStorage.setItem(storagePrefix + 'notes', JSON.stringify(notes));
@@ -974,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const noteEl = document.createElement('div');
             noteEl.className = 'widget sticky-note';
             noteEl.id = note.id;
-            noteEl.dataset.id = note.id;
+            noteEl.dataset.id = note.id; // Use a data-attribute for consistency
             noteEl.style.left = note.left;
             noteEl.style.top = note.top;
             noteEl.style.width = note.width;
@@ -982,14 +1047,23 @@ document.addEventListener('DOMContentLoaded', () => {
             noteEl.innerHTML = `
                 <div class="widget-header">
                     <span class="title">[ STICKY ]</span>
-                    <span class="close-btn" data-id="${note.id}">X</span>
+                    <div class="widget-controls">
+                        <span class="collapse-btn">[-]</span>
+                        <span class="close-btn" data-id="${note.id}">X</span>
+                    </div>
                 </div>
                 <div class="widget-content">
                     <textarea>${note.content}</textarea>
                 </div>
             `;
             container.appendChild(noteEl);
-            makeWidgetInteractive(noteEl);
+            makeWidgetInteractive(noteEl); // Make it draggable, collapsible etc.
+
+            if (note.collapsed) {
+                noteEl.classList.add('collapsed');
+                noteEl.querySelector('.collapse-btn').textContent = '[+]';
+            }
+
             noteEl.querySelector('.close-btn').addEventListener('click', () => {
                 notes = notes.filter(n => n.id !== note.id);
                 noteEl.remove();
@@ -1006,7 +1080,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 top: '100px',
                 left: `${100 + ((noteCounter-1) % 5) * 20}px`,
                 width: '200px',
-                height: '200px'
+                height: '200px',
+                collapsed: false
             };
             notes.push(newNote);
             createNoteElement(newNote);
