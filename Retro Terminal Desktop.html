@@ -9,7 +9,7 @@
     Author: Gemini
     Created for: Blaine Fisher
     Date: 2025-07-07
-    Version: 1.4
+    Version: 1.5
 
     Features:
     - Single-file, offline-first HTML/CSS/JS application.
@@ -18,7 +18,8 @@
     - Collapsible widgets.
     - Widgets: Clock, To-Do List, Timer/Stopwatch, Reminders, Sticky Notes,
       Calculator, Daily Quote, Calendar, Day Progress, Network Status, Battery.
-    - Data persistence using localStorage for To-Dos, Notes, and widget state (position, size, collapsed).
+    - Data persistence using localStorage for To-Dos, Notes, and widget state.
+    - "Reset All" functionality with confirmation to restore default state.
     - No external libraries or dependencies. Vanilla JavaScript.
     - Custom retro sound effects generated with Web Audio API.
     - CRT scanline and flicker effects via CSS.
@@ -29,7 +30,7 @@
             font-family: 'Press Start 2P';
             font-style: normal;
             font-weight: 400;
-            src: url(data:font/woff2;base64,d09GMgABAAAAAAYMAAsAAAAACyAAAAV4AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAVA1iWAIICg4ACAE2AiQDBgsEAAQgBYsdByAbfA3ILH8jB691jVzYIBwVkv9//z/u3b4bY2aT4KNgojHAEIifkUe3zdsx5g8SgQAjE2OfBAwE+QkQJG4EFpXpT8P//3/y/9v/P/7f+f/z/+//v/7/+//3/9//v/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7-2.0.0.css) format('woff2');
+            src: url(data:font/woff2;base64,d09GMgABAAAAAAYMAAsAAAAACyAAAAV4AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAVA1iWAIICg4ACAE2AiQDBgsEAAQgBYsdByAbfA3ILH8jB691jVzYIBwVkv9//z/u3b4bY2aT4KNgojHAEIifkUe3zdsx5g8SgQAjE2OfBAwE+QkQJG4EFpXpT8P//3/y/9v/P/7f+f/z/+//v/7/+//3/9//v/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7/+///f/7-2.0.0.css) format('woff2');
         }
 
         /* --- GLOBAL STYLES & CRT EFFECT --- */
@@ -377,8 +378,8 @@
             align-items: center;
         }
         
-        /* Custom Alert Modal */
-        #custom-alert {
+        /* Custom Alert & Confirm Modals */
+        .modal-overlay {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -534,14 +535,22 @@
             <div id="battery-status">BAT: N/A</div>
             <!-- Network Status -->
             <div id="network-status">NET: OFFLINE</div>
+            <button id="reset-all-btn">RESET</button>
             <button id="fullscreen-btn">FULLSCREEN</button>
         </div>
     </div>
     
-    <!-- CUSTOM ALERT MODAL -->
-    <div id="custom-alert">
+    <!-- MODALS -->
+    <div id="custom-alert" class="modal-overlay">
         <div id="custom-alert-message"></div>
         <button id="custom-alert-ok">OK</button>
+    </div>
+    <div id="custom-confirm" class="modal-overlay">
+        <div id="custom-confirm-message"></div>
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <button id="custom-confirm-ok">OK</button>
+            <button id="custom-confirm-cancel">CANCEL</button>
+        </div>
     </div>
 
 <script>
@@ -581,7 +590,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('sound-player').style.display = 'none';
         }
     }
-    // Set up a one-time listener for the first user interaction.
     document.body.addEventListener('click', initAudioSystem, { once: true });
 
     // --- UTILITY FUNCTIONS ---
@@ -612,6 +620,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
+    // --- MODAL FUNCTIONS ---
     const showAlert = (message) => {
         playSound('notify');
         const alertModal = document.getElementById('custom-alert');
@@ -624,31 +633,51 @@ document.addEventListener('DOMContentLoaded', () => {
         playSound('click');
     });
 
+    function showConfirm(message) {
+        return new Promise(resolve => {
+            const confirmModal = document.getElementById('custom-confirm');
+            const msgEl = document.getElementById('custom-confirm-message');
+            const okBtn = document.getElementById('custom-confirm-ok');
+            const cancelBtn = document.getElementById('custom-confirm-cancel');
+
+            msgEl.textContent = message;
+            confirmModal.style.display = 'flex';
+            
+            // Use .onclick to ensure we can re-assign it every time
+            okBtn.onclick = () => {
+                confirmModal.style.display = 'none';
+                playSound('click');
+                resolve(true);
+            };
+
+            cancelBtn.onclick = () => {
+                confirmModal.style.display = 'none';
+                playSound('click');
+                resolve(false);
+            };
+        });
+    }
+
     // --- DRAGGABLE, RESIZABLE, & COLLAPSIBLE WIDGET LOGIC ---
     function makeWidgetInteractive(widget) {
         const header = widget.querySelector('.widget-header');
         const collapseBtn = widget.querySelector('.collapse-btn');
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-        // Make header draggable
         if (header) {
             header.onmousedown = dragMouseDown;
         }
-
-        // Make widget collapsible
         if (collapseBtn) {
             collapseBtn.onclick = (e) => {
-                e.stopPropagation(); // Prevent drag from starting
+                e.stopPropagation();
                 widget.classList.toggle('collapsed');
                 collapseBtn.textContent = widget.classList.contains('collapsed') ? '[+]' : '[-]';
-                saveWidgetState(); // Save state after action
+                saveWidgetState();
             };
         }
 
         function dragMouseDown(e) {
-            // only drag with left mouse button, and not on controls
             if (e.button !== 0 || e.target.closest('.widget-controls')) return;
-            
             e.preventDefault();
             pos3 = e.clientX;
             pos4 = e.clientY;
@@ -663,20 +692,15 @@ document.addEventListener('DOMContentLoaded', () => {
             pos3 = e.clientX;
             pos4 = e.clientY;
 
-            // --- NEW BOUNDARY DETECTION LOGIC ---
             const desktopRect = desktop.getBoundingClientRect();
             let newTop = widget.offsetTop - pos2;
             let newLeft = widget.offsetLeft - pos1;
 
-            // Clamp top boundary
             if (newTop < 0) newTop = 0;
-            // Clamp left boundary
             if (newLeft < 0) newLeft = 0;
-            // Clamp bottom boundary
             if (newTop + widget.offsetHeight > desktopRect.height) {
                 newTop = desktopRect.height - widget.offsetHeight;
             }
-            // Clamp right boundary
             if (newLeft + widget.offsetWidth > desktopRect.width) {
                 newLeft = desktopRect.width - widget.offsetWidth;
             }
@@ -688,10 +712,9 @@ document.addEventListener('DOMContentLoaded', () => {
         function closeDragElement() {
             document.onmouseup = null;
             document.onmousemove = null;
-            saveWidgetState(); // Save state after dragging
+            saveWidgetState();
         }
         
-        // Save state on resize
         new ResizeObserver(saveWidgetState).observe(widget);
     }
     widgets.forEach(makeWidgetInteractive);
@@ -705,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 left: w.style.left,
                 width: w.style.width,
                 height: w.style.height,
-                collapsed: w.classList.contains('collapsed') // Save collapsed state
+                collapsed: w.classList.contains('collapsed')
             };
         });
         localStorage.setItem(storagePrefix + 'widgetPositions', JSON.stringify(positions));
@@ -722,7 +745,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     widget.style.width = positions[id].width || '';
                     widget.style.height = positions[id].height || '';
                     
-                    // Restore collapsed state
                     if (positions[id].collapsed) {
                         widget.classList.add('collapsed');
                         const btn = widget.querySelector('.collapse-btn');
@@ -744,7 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- WIDGET INITIALIZATION ---
 
-    // 1. Digital Clock & Date
+    // 1. Digital Clock
     (function initClock() {
         const timeEl = document.getElementById('clock-time');
         const dateEl = document.getElementById('clock-date');
@@ -845,7 +867,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }, 1000);
                 } else {
-                    isTimerRunning = false; // can't start a 0s timer
+                    isTimerRunning = false;
                 }
             } else {
                 clearInterval(timerInterval);
@@ -903,7 +925,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
     
-    // 4. Reminders Panel
+    // 4. Reminders
     (function initReminders() {
         const listEl = document.getElementById('reminders-list');
         const msgInput = document.getElementById('reminder-msg');
@@ -939,7 +961,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         function checkReminders() {
-            const currentTime = new Date().toTimeString().substring(0, 5); // HH:MM
+            const currentTime = new Date().toTimeString().substring(0, 5);
             let remindersChanged = false;
             reminders.forEach(reminder => {
                 if (!reminder.triggered && reminder.time === currentTime) {
@@ -957,10 +979,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderReminders();
     })();
 
-    // 5. Ambient Sound Player
+    // 5. Ambient Sound
     (function initSound() {
         const toggleBtn = document.getElementById('sound-toggle-btn');
-
         function startHum() {
             if (!audio.context || audio.isPlaying) return;
             audio.hum = audio.context.createOscillator();
@@ -980,7 +1001,6 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.isPlaying = true;
             toggleBtn.textContent = 'ON';
         }
-
         function stopHum() {
             if (!audio.isPlaying || !audio.hum) return;
             audio.hum.stop(0);
@@ -990,7 +1010,6 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.lfo = null;
             toggleBtn.textContent = 'OFF';
         }
-
         toggleBtn.addEventListener('click', () => {
             if (!audio.context) return;
             if (audio.context.state === 'suspended') audio.context.resume();
@@ -999,14 +1018,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
 
-    // 6. Fullscreen Toggle
+    // 6. Fullscreen
     (function initFullscreen() {
         const btn = document.getElementById('fullscreen-btn');
         btn.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    showAlert(`Error: ${err.message}`);
-                });
+                document.documentElement.requestFullscreen().catch(err => showAlert(`Error: ${err.message}`));
             } else {
                 document.exitFullscreen();
             }
@@ -1021,25 +1038,26 @@ document.addEventListener('DOMContentLoaded', () => {
         let noteCounter = notes.length > 0 ? Math.max(0, ...notes.map(n => parseInt(n.id.split('-')[1]))) + 1 : 0;
 
         function saveNotesState() {
-            notes.forEach(noteData => {
-                const noteEl = document.getElementById(noteData.id);
-                if (noteEl) {
-                    noteData.left = noteEl.style.left;
-                    noteData.top = noteEl.style.top;
-                    noteData.width = noteEl.style.width;
-                    noteData.height = noteEl.style.height;
-                    noteData.content = noteEl.querySelector('textarea').value;
-                    noteData.collapsed = noteEl.classList.contains('collapsed');
-                }
+            const currentNotes = [];
+            container.querySelectorAll('.sticky-note').forEach(noteEl => {
+                 currentNotes.push({
+                    id: noteEl.id,
+                    left: noteEl.style.left,
+                    top: noteEl.style.top,
+                    width: noteEl.style.width,
+                    height: noteEl.style.height,
+                    content: noteEl.querySelector('textarea').value,
+                    collapsed: noteEl.classList.contains('collapsed')
+                });
             });
-            localStorage.setItem(storagePrefix + 'notes', JSON.stringify(notes));
+            localStorage.setItem(storagePrefix + 'notes', JSON.stringify(currentNotes));
         }
 
         function createNoteElement(note) {
             const noteEl = document.createElement('div');
             noteEl.className = 'widget sticky-note';
             noteEl.id = note.id;
-            noteEl.dataset.id = note.id; // Use a data-attribute for consistency
+            noteEl.dataset.id = note.id;
             noteEl.style.left = note.left;
             noteEl.style.top = note.top;
             noteEl.style.width = note.width;
@@ -1057,7 +1075,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             container.appendChild(noteEl);
-            makeWidgetInteractive(noteEl); // Make it draggable, collapsible etc.
+            makeWidgetInteractive(noteEl);
 
             if (note.collapsed) {
                 noteEl.classList.add('collapsed');
@@ -1065,12 +1083,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             noteEl.querySelector('.close-btn').addEventListener('click', () => {
-                notes = notes.filter(n => n.id !== note.id);
                 noteEl.remove();
                 saveNotesState();
             });
             noteEl.querySelector('textarea').addEventListener('input', saveNotesState);
-            new ResizeObserver(saveNotesState).observe(noteEl);
         }
 
         addBtn.addEventListener('click', () => {
@@ -1078,12 +1094,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 id: `note-${noteCounter++}`,
                 content: '',
                 top: '100px',
-                left: `${100 + ((noteCounter-1) % 5) * 20}px`,
+                left: `${100 + ((container.children.length) % 5) * 20}px`,
                 width: '200px',
                 height: '200px',
                 collapsed: false
             };
-            notes.push(newNote);
             createNoteElement(newNote);
             saveNotesState();
         });
@@ -1091,18 +1106,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
     
     // 8. Bonus Widgets
-    // Mini-calculator
     (function initCalculator() {
         const display = document.getElementById('calc-display');
-        let currentInput = '';
-        let operator = '';
-        let firstOperand = null;
-        let shouldResetDisplay = false;
-
+        let currentInput = '', operator = '', firstOperand = null, shouldResetDisplay = false;
         document.getElementById('calc-buttons').addEventListener('click', (e) => {
             if (!e.target.matches('button')) return;
             const action = e.target.textContent;
-            
             if (e.target.matches('.calc-btn') && !e.target.matches('.op')) {
                 if (shouldResetDisplay) { currentInput = ''; shouldResetDisplay = false; }
                 currentInput += action;
@@ -1115,17 +1124,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     firstOperand = parseFloat(currentInput) || firstOperand;
                 }
-                currentInput = '';
-                operator = action;
-                shouldResetDisplay = true;
+                currentInput = ''; operator = action; shouldResetDisplay = true;
             } else if (e.target.id === 'calc-equals') {
                 if (operator && firstOperand !== null && currentInput) {
                     const result = calculate(firstOperand, parseFloat(currentInput), operator);
-                    display.value = result;
-                    currentInput = result.toString();
-                    firstOperand = null;
-                    operator = '';
-                    shouldResetDisplay = true;
+                    display.value = result; currentInput = result.toString();
+                    firstOperand = null; operator = ''; shouldResetDisplay = true;
                 }
             } else if (e.target.id === 'calc-clear') {
                 currentInput = ''; operator = ''; firstOperand = null; display.value = ''; shouldResetDisplay = false;
@@ -1141,7 +1145,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })();
 
-    // Random daily quote
     (function initQuote() {
         const quotes = [
             "War. War never changes.", "The hard part isn't finding a purpose. It's knowing what to do with it.",
@@ -1154,7 +1157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('quote-content').textContent = `"${quotes[dayOfYear % quotes.length]}"`;
     })();
     
-    // Simple calendar
     (function initCalendar() {
         const headerEl = document.getElementById('calendar-header');
         const gridEl = document.getElementById('calendar-grid');
@@ -1181,7 +1183,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })();
     
-    // Day progress bar
     (function initDayProgress() {
         const fillEl = document.getElementById('day-progress-fill');
         function update() {
@@ -1194,7 +1195,6 @@ document.addEventListener('DOMContentLoaded', () => {
         update();
     })();
 
-    // Network status
     (function initNetworkStatus() {
         const statusEl = document.getElementById('network-status');
         function updateOnlineStatus() {
@@ -1206,7 +1206,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateOnlineStatus();
     })();
 
-    // Battery level
     (function initBattery() {
         const batteryEl = document.getElementById('battery-status');
         if ('getBattery' in navigator) {
@@ -1222,11 +1221,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     })();
+    
+    // 9. Reset Functionality
+    (function initReset() {
+        document.getElementById('reset-all-btn').addEventListener('click', async () => {
+            const confirmed = await showConfirm('Are you sure? This will reset all widget positions and clear all saved data (notes, tasks, etc).');
+            if (confirmed) {
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith(storagePrefix)) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                location.reload();
+            }
+        });
+    })();
 
     // --- GLOBAL EVENT LISTENERS & INITIAL LOAD ---
-    // Delegated event listener for all button clicks to play sound
     document.body.addEventListener('click', (e) => {
-        if (e.target.matches('button') && e.target.id !== 'sound-toggle-btn' && e.target.id !== 'custom-alert-ok') {
+        if (e.target.matches('button') && e.target.id !== 'sound-toggle-btn' && !e.target.closest('.modal-overlay')) {
             playSound('click');
         }
     });
